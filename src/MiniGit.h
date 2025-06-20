@@ -5,4 +5,5 @@ class MiniGit {
 public:
     static void init();
 };
+
 #endif
