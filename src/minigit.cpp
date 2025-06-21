@@ -1,17 +1,17 @@
 #include "MiniGit.h"
 #include <iostream>
-#include <experimental/filesystem>
+#include <filesystem>
 #include <fstream>
 
-namespace fs = std::experimental::filesystem;
+namespace fs = std::filesystem;
 
 void MiniGit::init() {
-    fs::path minigitPath = ".minigit";
+    fs::path rootPath = fs::current_path().parent_path();
+    fs::path minigitPath = rootPath / ".minigit";
     if (fs::exists(minigitPath)) {
         std::cout << "Repository already initialized.\n";
         return;
     }
-
     try {
         fs::create_directory(minigitPath);
         fs::create_directory(minigitPath / "objects");
