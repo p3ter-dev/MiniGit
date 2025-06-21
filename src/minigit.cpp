@@ -1,15 +1,14 @@
-#include "minigit.h"
+#include "MiniGit.h"
 #include <iostream>
-#include <filesystem>
+#include <experimental/filesystem>
 #include <fstream>
-using namespace std;
-namespace fs = filesystem;
+
+namespace fs = std::experimental::filesystem;
 
 void MiniGit::init() {
     fs::path minigitPath = ".minigit";
-
-    if(fs::exists(minigitPath)) {
-        cout << "Repository already initialized.\n";
+    if (fs::exists(minigitPath)) {
+        std::cout << "Repository already initialized.\n";
         return;
     }
 
@@ -19,16 +18,17 @@ void MiniGit::init() {
         fs::create_directory(minigitPath / "commits");
         fs::create_directory(minigitPath / "refs");
 
-        // creating HEAD file and set it to point to main branch
-        ofstream headFile(minigitPath / "HEAD");
-        headFile << "ref: ref/main";
+        // Create HEAD file and set it to point to main branch
+        std::ofstream headFile(minigitPath / "HEAD");
+        headFile << "ref: refs/main";
         headFile.close();
-        
-        // creating initial main branch ref file
-        ofstream masterRef(minigitPath / "refs/main");
+
+        // Create initial main branch ref file
+        std::ofstream masterRef(minigitPath / "refs/main");
         masterRef.close();
-        cout << "Initialized empty MiniGit repository in .minigit/\n";
-    } catch (const exception& e) {
-        cerr << "Error initializing MiniGit: " << e.what() << "\n";
+
+        std::cout << "Initialized empty MiniGit repository in .minigit/\n";
+    } catch (const std::exception& e) {
+        std::cerr << "Error initializing MiniGit: " << e.what() << "\n";
     }
 }
