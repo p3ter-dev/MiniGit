@@ -8,7 +8,7 @@ int main() {
     repo.init();
     addFileToStage("test.txt"); // test file to stage
     commit("Initial commit"); // commit staged file
-    ShowLog();
+    showLog();
     return 0;
 }
 // This is the main entry point for the MiniGit application.
