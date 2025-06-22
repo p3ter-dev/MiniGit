@@ -1,6 +1,7 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include "./branch.h"
 
 namespace fs = std::filesystem;
 
@@ -35,25 +36,4 @@ void createBranch(const std::string &branchName)
     newBranch.close();
 
     std::cout << "Branch '" << branchName << "' created at commit " << currentCommit << "\n";
-}
-
-// Switch HEAD to point to a different branch
-void switchBranch(const std::string &branchName)
-{
-    fs::path repo = fs::current_path() / ".minigit";
-    fs::path branchPath = repo / "refs" / branchName;
-
-    // Check if branch exists
-    if (!fs::exists(branchPath))
-    {
-        std::cerr << "Branch '" << branchName << "' does not exist.\n";
-        return;
-    }
-
-    // Update HEAD to point to this branch
-    std::ofstream headFile(repo / "HEAD", std::ios::trunc);
-    headFile << "ref: refs/" << branchName << "\n";
-    headFile.close();
-
-    std::cout << "Switched to branch '" << branchName << "'\n";
 }
