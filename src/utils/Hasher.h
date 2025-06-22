@@ -2,9 +2,8 @@
 #define HASHER_H
 
 #include <string>
+#include <sstream>
 
-namespace utils {
-    std::string computeSHA1(const std::string& input);
-}
+std::string simpleHash(const std::string& content);
 
 #endif

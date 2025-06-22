@@ -1,39 +1,16 @@
-#include "Blob.h"
-#include "../utils/FileIO.h"
-#include "../utils/Hasher.h"
+#include "./Blob.h"
 #include <filesystem>
-#include <iostream>
+#include <fstream>
 
 namespace fs = std::filesystem;
 
-Blob::Blob(const std::string& filename)
-    : filename(filename) {
-    readAndHashFile();
-}
+Blob::Blob(const std::string& filename, const std::string& hash)
+    : filename(filename), hash(hash) {}
 
-void Blob::readAndHashFile() {
-    // Read file content
-    content = utils::readFile(filename);
-    // Hash content
-    hash = utils::computeSHA1(content);
-}
-
-void Blob::writeToObjectStore() const {
-    std::string objectPath = ".minigit/objects/" + hash;
-
-    // Only write if it doesn't already exist
-    if (!fs::exists(objectPath)) {
-        utils::writeFile(objectPath, content);
-        std::cout << "Blob created: " << hash << "\n";
-    } else {
-        std::cout << "Blob already exists: " << hash << "\n";
-    }
-}
-
-std::string Blob::getHash() const {
-    return hash;
-}
-
-std::string Blob::getFilename() const {
-    return filename;
+void Blob::save(const std::string& content) const {
+    fs::path objectsPath = fs::current_path() / ".minigit" / "objects";
+    fs::create_directories(objectsPath);
+    std::ofstream outFile(objectsPath / hash);
+    outFile << content;
+    outFile.close();
 }

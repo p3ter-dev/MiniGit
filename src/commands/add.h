@@ -1,10 +1,4 @@
-#ifndef ADD_COMMAND_H
-#define ADD_COMMAND_H
-
+#pragma once
 #include <string>
 
-namespace command {
-    void addFile(const std::string& filename);
-}
-
-#endif
+void addFileToStage(const std::string& filename);
