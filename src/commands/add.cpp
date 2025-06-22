@@ -20,6 +20,13 @@ void addFileToStage(const std::string& filename) {
 
     Blob blob(filename, hash);
     blob.save(content);
-
+    // Append the blob hash to the staging area
+    std::ofstream stageFile(".minigit/stage", std::ios::app);
+    if (stageFile) {
+        stageFile << hash << "\n";
+        stageFile.close();
+    } else {
+        std::cerr << "Error: could not open .minigit/stage for writing.\n";
+    }
     std::cout << "staged: " << filename << " (" << hash << ")\n";
 }
