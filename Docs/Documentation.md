@@ -93,33 +93,52 @@ While MiniGit provides a solid foundation for understanding version control, sev
     - It only shows changes in existing lines, not context lines, and handles added/deleted lines in a rudimentary way.
 
 - **Limited Merge Conflict Handling:** The merge.cpp only detects basic "both modified" conflicts and simply prints a message, without creating merge conflict markers in files or providing tools for resolution.
+
 - **No Deletion/Renaming Tracking:** The system doesn't explicitly track file deletions or renames. Deleted files would simply vanish from the next commit's blob list, and renamed files would appear as a deletion of the old file and an addition of a new one.
+
 - **Hashing Algorithm:** simpleHash is a basic, non-cryptographic hash function. A real Git implementation uses SHA-1 (and newer SHA-256) for strong content integrity and collision resistance.
+
 - **Branch HEAD Management:** While checkout handles ref: refs/branch and detached HEADs, readCurrentHead() in FileIO.cpp still only reads from refs/main, which might not be correct when HEAD is detached.
+
 - **No Reset/Revert:** Commands for undoing changes or reverting commits are not implemented.
+
 - **No Status Command:** There is no minigit status to show the state of the working directory, staged changes, and uncommitted changes.
+
 - **No Tagging:** The ability to create immutable pointers (tags) to specific commits is missing.
+
 
 **Future Improvements**
 
-- Implement Proper Index/Tree Objects:
+- **Implement Proper Index/Tree Objects:**
     - Overhaul the staging area (.minigit/stage) to be an "index" file that stores (mode, filename, blob_hash) entries, mapping specific file paths to their blob hashes.
     - Introduce "Tree" objects that represent directories. A commit would then point to a single root Tree object, which in turn points to other Trees (subdirectories) or Blobs (files). This would resolve the filename tracking limitation.
-- Advanced checkout:
-    - Modify checkout to read the correct filenames from the commit's tree/index data and restore them accurately.
-    - Add ability to checkout <filename> to restore a specific file from the index or a commit.
-- Refined diff Command:
+
+- **Advanced `checkout`:**
+    - Modify `checkout` to read the correct filenames from the commit's tree/index data and restore them accurately.
+    - Add ability to `checkout <filename>` to restore a specific file from the index or a commit.
+
+- **Refined `diff` Command:**
     - Implement a proper diffing algorithm (e.g., Myers's algorithm) that can show contextual differences, added lines, deleted lines, and efficiently compare different file versions across commits using their filenames.
-    - Enable diff to work between working directory, staging area, and commits.
-- Comprehensive merge with Conflict Markers:
-    - When conflicts occur, modify the conflicting files in the working directory with standard Git-style conflict markers (<<<<<<<, =======, >>>>>>>).
+    - Enable `diff` to work between working directory, staging area, and commits.
+
+- **Comprehensive `merge` with Conflict Markers:**
+    - When conflicts occur, modify the conflicting files in the working directory with standard Git-style conflict markers (`<<<<<<<`, `=======`, `>>>>>>>`).
     - Provide a way to mark conflicts as resolved and then commit the merge.
-- Implement status Command: Show modified, new, deleted, staged, and untracked files.
-- Implement reset and revert: Allow users to undo commits and modify history.
-- Support for Deletion and Renaming: Explicitly track file deletions and renames in the staging area and commit objects.
-- Branch Management: Add commands for listing branches (minigit branch), deleting branches, and pushing/pulling branches if remote operations are added.
-- Remote Operations: Implement minigit clone, minigit fetch, minigit push, minigit pull to interact with remote repositories. This would involve networking (TCP/IP sockets or HTTP).
-- Error Handling and User Feedback: Enhance error messages to be more informative and user-friendly.
-- Robust Hashing: Integrate a standard cryptographic hash function like SHA-1 or SHA-256 for stronger data integrity.
-- Automated Testing: Implement a comprehensive suite of unit tests and integration tests to ensure all commands and data structures function correctly.
+
+- **Implement `status` Command:** Show modified, new, deleted, staged, and untracked files.
+
+- **Implement `reset` and `revert`:** Allow users to undo commits and modify history.
+
+- **Support for Deletion and Renaming:** Explicitly track file deletions and renames in the staging area and commit objects.
+
+- **Branch Management:** Add commands for listing branches (`minigit branch`), deleting branches, and pushing/pulling branches if remote operations are added.
+
+- **Remote Operations:** Implement `minigit clone`, `minigit fetch`, `minigit push`, `minigit pull` to interact with remote repositories. This would involve networking (TCP/IP sockets or HTTP).
+
+- **Error Handling and User Feedback:** Enhance error messages to be more informative and user-friendly.
+
+- **Robust Hashing:** Integrate a standard cryptographic hash function like SHA-1 or SHA-256 for stronger data integrity.
+
+- **Automated Testing:** Implement a comprehensive suite of unit tests and integration tests to ensure all commands and data structures function correctly.
+
 
