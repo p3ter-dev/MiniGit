@@ -43,6 +43,11 @@ void merge(const std::string& targetBranch) {
     std::string currentCommit = readCurrentHead();
 
     std::ifstream in(".minigit/refs/" + targetBranch);
+    if (!in) {
+        std::cerr << "Branch '" << targetBranch << "' does not exist.\n";
+        return;
+    }
+
     std::string targetCommit;
     std::getline(in, targetCommit);
     in.close();
@@ -53,15 +58,33 @@ void merge(const std::string& targetBranch) {
     auto currentBlobs = getBlobs(currentCommit);
     auto targetBlobs = getBlobs(targetCommit);
 
+    bool conflictFound = false;
+
     for (const auto& [filename, baseHash] : baseBlobs) {
         std::string currentHash = currentBlobs[filename];
         std::string targetHash = targetBlobs[filename];
 
         if (currentHash != targetHash && currentHash != baseHash && targetHash != baseHash) {
+            // Conflict
+            conflictFound = true;
             std::cout << "CONFLICT: both modified " << filename << "\n";
+
+            std::ifstream currentBlob(".minigit/objects/" + currentHash);
+            std::ifstream targetBlob(".minigit/objects/" + targetHash);
+
+            std::ofstream outFile(filename);
+            outFile << "<<<<<<< current\n";
+            outFile << currentBlob.rdbuf();
+            outFile << "=======\n";
+            outFile << targetBlob.rdbuf();
+            outFile << ">>>>>>> " << targetBranch << "\n";
+            outFile.close();
+
+            std::cout << "Conflict markers written to " << filename << "\n";
             continue;
         }
 
+        // Fast-forward merge
         if (targetHash != baseHash && currentHash == baseHash) {
             std::ifstream inBlob(".minigit/objects/" + targetHash);
             std::ofstream outFile(filename);
@@ -70,5 +93,10 @@ void merge(const std::string& targetBranch) {
         }
     }
 
-    std::cout << "Merge finished.\n";
+    if (conflictFound) {
+        std::cout << "\nMerge completed with conflicts.\n"
+                     "Please resolve conflicts and commit manually.\n";
+    } else {
+        std::cout << "\nMerge finished successfully with no conflicts.\n";
+    }
 }
