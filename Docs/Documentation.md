@@ -79,3 +79,24 @@ MiniGit leverages a combination of in-memory C++ standard library containers and
 ## **3. Limitations and Future Improvements**
 While MiniGit provides a solid foundation for understanding version control, several areas can be enhanced for robustness, completeness, and a more Git-like experience.
 
+**Current Limitations**
+
+- **Filename Tracking in Blobs/Commits:**
+    - Blob objects internally store filename, but commit.cpp only stores blob hashes in the commit file (blob: <hash>).
+    - checkout.cpp uses blobHash + ".txt" as the filename for restoration, making it impossible to restore original filenames or handle files without .txt extensions. This is a significant deviation from how Git tracks files by their path in the index and tree objects.
+    - This also impacts diff.cpp and merge.cpp, which compare blobs without context of their original filenames, leading to potential issues with multiple files having the same content (same hash).
+
+- **Simple Staging Area:** The .minigit/stage file is a flat list of blob hashes. A robust staging area (Git's "index") would store (mode, filename, blob_hash) tuples, allowing for tracking of renamed, deleted, or executable files, and more precise staging.
+
+- **Basic Diffing Mechanism:**
+    - diff.cpp compares two blob files directly and assumes a one-to-one correspondence by std::min(blobs1.size(), blobs2.size()) iterating. It doesn't use filenames to intelligently match files across commits.
+    - It only shows changes in existing lines, not context lines, and handles added/deleted lines in a rudimentary way.
+
+- **Limited Merge Conflict Handling:** The merge.cpp only detects basic "both modified" conflicts and simply prints a message, without creating merge conflict markers in files or providing tools for resolution.
+- **No Deletion/Renaming Tracking:** The system doesn't explicitly track file deletions or renames. Deleted files would simply vanish from the next commit's blob list, and renamed files would appear as a deletion of the old file and an addition of a new one.
+- **Hashing Algorithm:** simpleHash is a basic, non-cryptographic hash function. A real Git implementation uses SHA-1 (and newer SHA-256) for strong content integrity and collision resistance.
+- **Branch HEAD Management:** While checkout handles ref: refs/branch and detached HEADs, readCurrentHead() in FileIO.cpp still only reads from refs/main, which might not be correct when HEAD is detached.
+- **No Reset/Revert:** Commands for undoing changes or reverting commits are not implemented.
+- **No Status Command:** There is no minigit status to show the state of the working directory, staged changes, and uncommitted changes.
+- **No Tagging:** The ability to create immutable pointers (tags) to specific commits is missing.
+
