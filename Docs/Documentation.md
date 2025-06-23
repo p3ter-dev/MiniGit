@@ -7,7 +7,7 @@ It demonstrates a practical application of fundamental Data Structures and Algor
 
 
 
-1. ## **Data Structures Used**
+## **1. Data Structures Used**
 
 MiniGit leverages a combination of in-memory C++ standard library containers and a robust file-system based persistence layer to manage version control data.
 
@@ -19,11 +19,11 @@ MiniGit leverages a combination of in-memory C++ standard library containers and
     - `.minigit/HEAD`: A file pointing to the current branch (ref: refs/main) or a specific commit hash (detached HEAD).
     - `.minigit/stage`: A simple text file serving as the staging area, listing the blob hashes of files prepared for the next commit.
 
-- Blob (Blob Class):
-    - Blob.h, Blob.cpp: Represents a file's content at a specific version.
-    - Attributes: std::string filename (though currently used primarily for internal identification in Blob class, not consistently for file restoration by checkout which relies on hash.txt naming) and std::string hash.
-    - Functionality: Stores actual file content in the .minigit/objects/ directory, named by its hash.
-    - DSA Concepts: Hashing (for content addressing), File I/O.
+- **Blob (`Blob` Class):**
+    - `Blob.h`, `Blob.cpp`: Represents a file's content at a specific version.
+    - **Attributes:** `std::string filename` (though currently used primarily for internal identification in Blob class, not consistently for file restoration by `checkout` which relies on hash.txt naming) and `std::string hash`.
+    - **Functionality:** Stores actual file content in the `.minigit/objects/` directory, named by its hash.
+    - **DSA Concepts:** Hashing (for content addressing), File I/O.
 
 - Commit Object (File-based representation):
     - Managed by commit.cpp, FileIO.cpp: Represents a snapshot of the repository.
@@ -41,11 +41,11 @@ MiniGit leverages a combination of in-memory C++ standard library containers and
     - DSA Concepts: Key-Value Store (conceptually, where branch names are keys and commit hashes are values).
 
 - Hashing (Hasher.h, Hasher.cpp):
-    - Utilizes a custom simpleHash function (likely a polynomial rolling hash) to generate unique identifiers for file contents and commit data.
+    - Utilizes a custom simpleHash function to generate unique identifiers for file contents and commit data.
     - DSA Concepts: Hashing algorithm.
 
-Utility Data Structures:
-    - std::vector<std::string>: Used extensively for collecting lists of blob hashes (e.g., in readStagedFiles).
-    - std::unordered_set<std::string>: Used in merge.cpp for efficient lookup of commit ancestors during Lowest Common Ancestor (LCA) calculation.
-    - std::unordered_map<std::string, std::string>: Used in merge.cpp to map filenames (represented by hash + ".txt") to their blob hashes within a commit.
+- Utility Data Structures:
+    - `std::vector<std::string>`: Used extensively for collecting lists of blob hashes (e.g., in `readStagedFiles`).
+    - `std::unordered_set<std::string>`: Used in `merge.cpp` for efficient lookup of commit ancestors during Lowest Common Ancestor (LCA) calculation.
+    - `std::unordered_map<std::string, std::string>`: Used in `merge.cpp` to map filenames (represented by `hash + ".txt"`) to their blob hashes within a commit.
 
