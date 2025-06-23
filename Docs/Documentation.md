@@ -47,21 +47,30 @@ MiniGit leverages a combination of in-memory C++ standard library containers and
 - **Utility Data Structures:**
     - `std::vector<std::string>`: Used extensively for collecting lists of blob hashes (e.g., in `readStagedFiles`).
     - `std::unordered_set<std::string>`: Used in `merge.cpp` for efficient lookup of commit ancestors during Lowest Common Ancestor (LCA) calculation.
-    - `std::unordered_map<std::string, std::string>`: Used in `merge.cpp` to map filenames (represented by `hash + ".txt"`) to their blob hashes within a commit.
+    - `std::unordered_map<std::string, std::string>`: Used in `merge.cpp` to map filenames (represented by `hash + ".txt"`) to their blob hashes within a commit.   
+
 
 
 ## **2. Design Decisions**
 
-File-Based Object Storage: Adopting a Git-like object model where all versioned content and metadata are stored as individual files named by their hash within a .minigit/ directory. This simplifies persistence and makes the repository's internal state transparent.
-Content-Addressable Blobs: Files are stored as "blobs" identified by the hash of their content. This ensures data integrity, enables deduplication of identical file contents, and forms the basis for detecting changes.
-Immutable Objects: Once created, Blob and Commit objects are never modified. Any change results in a new object, preserving history.
-Simple Hashing Algorithm: The use of simpleHash for generating unique IDs for blobs and commits simplifies the cryptographic complexity for this educational project while fulfilling the core requirement of unique identification.
-Linear Commit History (Initial Focus): While the DSA Project.pdf mentions DAGs, the primary parentHash field in commit files and the readParentHash function suggests a focus on linear commit history initially, with merge extending this to handle a basic form of branching history.
-Clear Separation of Concerns (Modular Design):
-src/commands/: Houses the implementations for each CLI command (add, commit, log, branch, checkout, diff, merge), promoting modularity.
-src/datastructures/: Contains classes or definitions for core Git objects like Blob (and conceptually Commit if it were a full class).
-src/utils/: Provides reusable utility functions for common tasks like file I/O and hashing, reducing code duplication.
-Direct File Manipulation for State: Instead of complex in-memory databases, the system directly reads from and writes to files like .minigit/stage, .minigit/HEAD, and files under .minigit/refs/ to manage the repository's current state.
-Basic Diffing: The diff command implements a line-by-line comparison of two blob contents, demonstrating the fundamental concept of content difference.
-Lowest Common Ancestor (LCA) for Merge: The merge command implements a simplified 3-way merge by finding the LCA, which is a correct approach for understanding merge bases in Git.
+- **File-Based Object Storage:** Adopting a Git-like object model where all versioned content and metadata are stored as individual files named by their hash within a `.minigit/` directory. This simplifies persistence and makes the repository's internal state transparent.
+
+- **Content-Addressable Blobs:** Files are stored as "blobs" identified by the hash of their content. This ensures data integrity, enables deduplication of identical file contents, and forms the basis for detecting changes.
+
+- **Immutable Objects:** Once created, `Blob` and `Commit` objects are never modified. Any change results in a new object, preserving history.
+
+- **Simple Hashing Algorithm:** The use of `simpleHash` for generating unique IDs for blobs and commits simplifies the cryptographic complexity for this educational project while fulfilling the core requirement of unique identification.
+
+- **Linear Commit History (Initial Focus):** While the DSA Project.pdf mentions DAGs, the primary parentHash field in commit files and the readParentHash function suggests a focus on linear commit history initially, with merge extending this to handle a basic form of branching history.
+
+- **Clear Separation of Concerns (Modular Design):**
+    - `src/commands/`: Houses the implementations for each CLI command (`add`, `commit`, `log`, `branch`, `checkout`, `diff`, `merge`), promoting modularity.
+    - `src/datastructures/`: Contains classes or definitions for core Git objects like `Blob` (and conceptually `Commit` if it were a full class).
+    - `src/utils/`: Provides reusable utility functions for common tasks like file I/O and hashing, reducing code duplication.
+
+- **Direct File Manipulation for State:** Instead of complex in-memory databases, the system directly reads from and writes to files like `.minigit/stage`, `.minigit/HEAD`, and files under `.minigit/refs/` to manage the repository's current state.
+
+- **Basic Diffing:** The `diff` command implements a line-by-line comparison of two blob contents, demonstrating the fundamental concept of content difference.
+
+- **Lowest Common Ancestor (LCA) for Merge:** The `merge` command implements a simplified 3-way merge by finding the LCA, which is a correct approach for understanding merge bases in Git.
 
