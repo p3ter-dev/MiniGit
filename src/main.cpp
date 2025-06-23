@@ -4,16 +4,19 @@
 #include "./commands/commit.h"
 #include "./datastructures/branch.h"
 #include "./commands/checkout.h"
+#include "./commands/merge.h"
 using command::showLog;
 
 int main() {
-    MiniGit repo;
-    repo.init();
-    addFileToStage("test.txt"); // test file to stage
-    commit("Initial commit"); // commit staged file
-    showLog(); // display commit log
-    createBranch("feature-something"); // create a new branch
-    checkout("test-branch"); // Testing basic checkout print
+    // MiniGit repo;
+    // repo.init();
+    // addFileToStage("test.txt"); // test file to stage
+    // commit("Initial commit"); // commit staged file
+    // showLog(); // display commit log
+    // createBranch("feature-test"); // create a new branch
+    // checkout("main"); // Testing basic checkout print
+    merge("feature-test"); // merge feature test into main
+    showLog(); // display commit log after merge
     return 0;
 }
 // This is the main entry point for the MiniGit application.
