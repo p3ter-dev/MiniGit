@@ -9,16 +9,6 @@
 
 namespace fs = std::filesystem;
 
-std::string readParentHash(const std::string& commitHash) {
-    std::ifstream file(".minigit/commits/" + commitHash);
-    std::string line;
-    while (std::getline(file, line)) {
-        if (line.rfind("parent: ", 0) == 0)
-            return line.substr(8);
-    }
-    return "null";
-}
-
 std::string findLCA(const std::string& current, const std::string& other) {
     std::unordered_set<std::string> ancestors;
     std::string temp = current;
