@@ -5,6 +5,8 @@ MiniGit is a lightweight, local-only version control system meticulously crafted
 It demonstrates a practical application of fundamental Data Structures and Algorithms (DSA) principles, including hashing for content-addressing, efficient file I/O, graph traversal for commit history, and basic conflict resolution, all orchestrated through a Command-Line Interface (CLI).
 
 
+
+
 1. ## **Data Structures Used**
 
 MiniGit leverages a combination of in-memory C++ standard library containers and a robust file-system based persistence layer to manage version control data.
@@ -32,4 +34,18 @@ MiniGit leverages a combination of in-memory C++ standard library containers and
     - Managed by add.cpp, commit.cpp, FileIO.cpp: A simple flat-file index of staged file blob hashes.
     - Internal Representation (in code): std::vector<std::string> to hold the list of blob hashes read from .minigit/stage.
     - DSA Concepts: Dynamic Array/List for in-memory representation.
+
+- Branch References and HEAD (via .minigit/refs/ and .minigit/HEAD files):
+    - Managed by minigit.cpp, commit.cpp, branch.cpp, checkout.cpp, FileIO.cpp: Lightweight pointers to specific commit hashes.
+    - Internal Representation: Simple text files.
+    - DSA Concepts: Key-Value Store (conceptually, where branch names are keys and commit hashes are values).
+
+- Hashing (Hasher.h, Hasher.cpp):
+    - Utilizes a custom simpleHash function (likely a polynomial rolling hash) to generate unique identifiers for file contents and commit data.
+    - DSA Concepts: Hashing algorithm.
+
+Utility Data Structures:
+    - std::vector<std::string>: Used extensively for collecting lists of blob hashes (e.g., in readStagedFiles).
+    - std::unordered_set<std::string>: Used in merge.cpp for efficient lookup of commit ancestors during Lowest Common Ancestor (LCA) calculation.
+    - std::unordered_map<std::string, std::string>: Used in merge.cpp to map filenames (represented by hash + ".txt") to their blob hashes within a commit.
 
