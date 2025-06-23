@@ -1,4 +1,4 @@
-#include "MiniGit.h"
+#include "./commands/init.h"
 #include "./commands/log.h"
 #include "./commands/add.h"
 #include "./commands/commit.h"
@@ -9,8 +9,7 @@
 using command::showLog;
 
 int main() {
-    // MiniGit repo;
-    // repo.init();
+    initRepo();
     // addFileToStage("test.txt"); // test file to stage
     // commit("Initial commit"); // commit staged file
     // showLog(); // display commit log
@@ -18,7 +17,7 @@ int main() {
     // checkout("main"); // Testing basic checkout print
     // merge("feature-test"); // merge feature test into main
     // showLog(); // display commit log after merge
-    diff("b3f97fa", "b3f97fa"); // display differences between two commits
+    // diff("b3f97fa", "b3f97fa"); // display differences between two commits
     return 0;
 }
 // This is the main entry point for the MiniGit application.
