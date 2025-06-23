@@ -72,5 +72,10 @@ MiniGit leverages a combination of in-memory C++ standard library containers and
 
 - **Basic Diffing:** The `diff` command implements a line-by-line comparison of two blob contents, demonstrating the fundamental concept of content difference.
 
-- **Lowest Common Ancestor (LCA) for Merge:** The `merge` command implements a simplified 3-way merge by finding the LCA, which is a correct approach for understanding merge bases in Git.
+- **Lowest Common Ancestor (LCA) for Merge:** The `merge` command implements a simplified 3-way merge by finding the LCA, which is a correct approach for understanding merge bases in Git.  
+
+
+
+## **3. Limitations and Future Improvements**
+While MiniGit provides a solid foundation for understanding version control, several areas can be enhanced for robustness, completeness, and a more Git-like experience.
 
