@@ -116,4 +116,4 @@ echo "Content for feature." > feature-file.txt
 ./minigit merge feature-branch
 
 # 10. View differences between two commits (replace with actual commit hashes from `minigit log`)
-# ./minigit diff <commit-hash-1> <commit-hash-2>
+./minigit diff <commit-hash-1> <commit-hash-2>
