@@ -1,6 +1,18 @@
 # MiniGit Project
 
 This is a collaborative project for building a mini Git-like system.
+---
+
+## 👥 Prepared by:
+
+1. Peter Kinfe …………………………… ATE/7749/15  
+2. Abenezer Degife ………………… ATE/2172/15  
+3. Kirubel Yitagesu ………………… ATE/9761/15  
+4. Mintesnot Assefa ………………… ATE/1203/16  
+5. Yohannis Million ………………… ATE/9533/16  
+6. Yordanos Tarekegn …………… ATE/5260/14
+
+---
 
 ## 📽️ Project Demo
 
