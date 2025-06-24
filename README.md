@@ -1,4 +1,4 @@
-# MiniGit Project
+# MiniGit Project for DSA
 
 This is a collaborative project for building a mini Git-like system.
 ---
